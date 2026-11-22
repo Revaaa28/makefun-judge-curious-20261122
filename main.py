@@ -23,6 +23,15 @@ def main() -> None:
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
         f.write(TEXT)
 
+    # Read back and verify what was written: the entry must be
+    # 1-280 Unicode code points with no trailing newline.
+    with open("/output/entry.txt", "r", encoding="utf-8", newline="") as f:
+        written = f.read()
+    assert written == TEXT, "entry.txt content differs from TEXT"
+    assert 1 <= len(written) <= 280, f"entry length {len(written)} out of range 1-280"
+    assert not written.endswith("\n"), "entry.txt must not end with a newline"
+    print(f"entry.txt verified: {len(written)} characters, no trailing newline")
+
 
 if __name__ == "__main__":
     main()
